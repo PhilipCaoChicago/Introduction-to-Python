@@ -1,0 +1,182 @@
+http://www.codeskulptor.org/#user43_lplknbMt93_1.py
+
+# implementation of card game - Memory
+
+import simplegui
+import random
+card_number = 8
+Turns = 0
+round_turns = int(round(Turns))
+
+expose = [False] * card_number * 2
+
+
+card_list = range(0,card_number) * 2
+random.shuffle(card_list)
+
+frame_width = 800
+frame_height = 100
+
+card_width = frame_width / card_number /2 
+card_height = frame_height
+
+first_click = list()
+second_click = list()
+ticker_1 = 0
+ticker_2 = 0
+
+state = 0
+
+
+# helper function to initialize globals
+def new_game():
+    random.shuffle(card_list)
+    global expose, Turns, state
+    expose = [False] * card_number * 2
+    Turns = 0
+    first_click = list()
+    second_click = list()
+    ticker_1 = 0
+    ticker_2 = 0
+    state = 0
+    label.set_text("Turns = " + str(round_turns))
+
+     
+# define event handlers
+def mouseclick(pos):
+    # add game state logic here
+    global Turns, first_click, second_click, state, ticker_1, ticker_2
+    
+    if state == 0:
+        for i in range(card_number * 2):
+            if card_width * i < pos[0] < card_width * (i+1):
+                if expose[i] == False:
+                    expose[i] = True
+                    Turns += 0.5
+                    round_turns = int(round(Turns))
+                    label.set_text("Turns = " + str(round_turns))
+                    first_click = card_list[i]
+                    ticker_1 = i
+                    state = 1
+                        
+    elif state == 1:            
+        for i in range(card_number * 2):
+            if card_width * i < pos[0] < card_width * (i+1):
+                if expose[i] == False:
+                    expose[i] = True
+                    Turns += 0.5
+                    round_turns = int(round(Turns))
+                    label.set_text("Turns = " + str(round_turns))
+                    second_click = card_list[i]
+                    ticker_2 = i
+                    state = 2
+                    
+                     
+    elif state == 2:
+        if first_click == second_click:
+            state = 0       
+            for i in range(card_number * 2):
+                if card_width * i < pos[0] < card_width * (i+1):
+                    if expose[i] == False:
+                        expose[i] = True
+                        Turns += 0.5
+                        round_turns = int(round(Turns))
+                        label.set_text("Turns = " + str(round_turns))
+                        first_click = card_list[i]
+                        ticker_1 = i
+                        state = 1
+                        
+        elif first_click != second_click:
+            expose[ticker_1] = False
+            expose[ticker_2] = False
+            state = 0
+            for i in range(card_number * 2):
+                if card_width * i < pos[0] < card_width * (i+1):
+                    if expose[i] == False:
+                        expose[i] = True
+                        Turns += 0.5
+                        round_turns = int(round(Turns))
+                        label.set_text("Turns = " + str(round_turns))
+                        first_click = card_list[i]
+                        ticker_1 = i
+                        state = 1                
+                        
+# cards are logically 50x100 pixels in size    
+def draw(canvas):
+    # numbers hidden
+    for i in range(card_number * 2):
+        
+    # draw a blank green rectangle or card's value
+        if expose[i] == True:
+            canvas.draw_text(str(card_list[i]), [card_width * (0.5 + i), card_height /2],
+                         24, "White")
+        elif expose[i] == False:
+             canvas.draw_polygon([[card_width * i ,0],
+                                  [card_width * (i+1), 0] ,
+                                  [card_width * (i+1), card_height],
+                                  [card_width * i,card_height]],
+                                1, "White", "Green" )
+    
+
+
+# create frame and add a button and labels
+frame = simplegui.create_frame("Memory", frame_width, frame_height)
+frame.add_button("Reset", new_game)
+label = frame.add_label("Turns = " + str(round_turns))
+
+# register event handlers
+frame.set_mouseclick_handler(mouseclick)
+frame.set_draw_handler(draw)
+
+# get things rolling
+frame.start()
+
+
+# Always remember to review the grading rubric
+    
+                 
+    
+
+                      
+                   
+                        
+# cards are logically 50x100 pixels in size    
+def draw(canvas):
+    # numbers hidden
+    for i in range(card_number * 2):
+        
+    # draw a blank green rectangle or card's value
+        if expose[i] == True:
+            canvas.draw_text(str(card_list[i]), [card_width * (0.5 + i), card_height /2],
+                         24, "White")
+        elif expose[i] == False:
+             canvas.draw_polygon([[card_width * i ,0],
+                                  [card_width * (i+1), 0] ,
+                                  [card_width * (i+1), card_height],
+                                  [card_width * i,card_height]],
+                                1, "White", "Green" )
+    
+
+
+# create frame and add a button and labels
+frame = simplegui.create_frame("Memory", frame_width, frame_height)
+frame.add_button("Reset", new_game)
+label = frame.add_label("Turns = " + str(round_turns))
+
+# register event handlers
+frame.set_mouseclick_handler(mouseclick)
+frame.set_draw_handler(draw)
+
+# get things rolling
+frame.start()
+
+
+# Always remember to review the grading rubric
+frame.set_draw_handler(draw)
+
+# get things rolling
+new_game()
+frame.start()
+
+
+# Always remember to review the grading rubric
