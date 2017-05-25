@@ -1,0 +1,233 @@
+http://www.codeskulptor.org/#user42_uNLEHj3LTX_12.py
+
+# template for "Guess the number" mini-project
+# input will come from buttons and an input field
+# all output for the game will be printed in the console
+import random
+import simplegui
+import math
+
+# helper function to start and restart the game
+
+global number_range
+number_range = 100
+
+def new_game():
+    # initialize global variables used in your code here
+    global number_of_guess
+    if number_range == 100:
+        number_of_guess = 7
+    else: 
+        number_of_guess = 10
+        
+    global secret_number
+    secret_number = random.randrange(0, number_range)
+    print "New game. Range is from " + "[" + "0" + "," + str(number_range) + ")"
+    print "Number of remaining guesses is " + str(number_of_guess)
+    print
+    
+# define event handlers for control panel
+def range100():
+    # button that changes the range to [0,100) and starts a new game 
+    global number_range 
+    number_range = 100 
+    new_game()
+    
+
+    
+def range1000():
+    # button that changes the range to [0,1000) and starts a new game     
+    global number_range 
+    number_range = 1000   
+    global number_of_guess
+    number_of_guess = 10
+    new_game()
+    
+def input_guess(guess):
+    # main game logic goes here	
+    
+    # print guess
+    global guess_number
+    guess_number = int(guess)
+    print "Guess was " + str(guess)
+    
+    # number of guess remain, and 
+    # end the game if there is no sufficient number of guesses left
+    global number_of_guess 
+    number_of_guess = number_of_guess - 1
+    if number_of_guess >= 0:
+        print "Number of remaining guesses is " + str(number_of_guess)
+    
+    
+    # print the results
+    if secret_number < guess_number:
+        print "Lower!"
+    elif secret_number > guess_number:
+        print "Higher!" 
+    else:
+        print "Correct!"
+    
+    #end game if the reamining guesses is used up
+    if number_of_guess == 0:
+        print "The remaining guess is used up"
+        print "Game ended!"
+        print
+        new_game()
+    else:
+        print
+    
+    
+# create frame
+# register event handlers for control elements and start frame
+
+f = simplegui.create_frame("Guess the number",200,200)
+f.add_button("Range is [0,100)",range100, 200)
+f.add_button("Range is [0,1000)",range1000, 200)
+f.add_input("Enter a guess", input_guess, 200)
+
+
+
+# call new_game 
+new_game()
+
+
+# Tets
+# Testing template for "Guess the number"
+
+###################################################
+# Start our test #1 - assume global variable secret_number
+# is the the "secret number" - change name if necessary
+
+
+secret_number = 74	
+input_guess("50")
+input_guess("75")
+input_guess("62")
+input_guess("68")
+input_guess("71")
+input_guess("73")
+input_guess("74")
+
+###################################################
+# Output from test #1
+#New game. Range is [0,100)
+#Number of remaining guesses is 7
+#
+#Guess was 50
+#Number of remaining guesses is 6
+#Higher!
+#
+#Guess was 75
+#Number of remaining guesses is 5
+#Lower!
+#
+#Guess was 62
+#Number of remaining guesses is 4
+#Higher!
+#
+#Guess was 68
+#Number of remaining guesses is 3
+#Higher!
+#
+#Guess was 71
+#Number of remaining guesses is 2
+#Higher!
+#
+#Guess was 73
+#Number of remaining guesses is 1
+#Higher!
+#
+#Guess was 74
+#Number of remaining guesses is 0
+#Correct!
+#
+#New game. Range is [0,100)
+#Number of remaining guesses is 7
+
+###################################################
+# Start our test #2 - assume global variable secret_number
+# is the the "secret number" - change name if necessary
+
+range1000()
+secret_number = 375	
+input_guess("500")
+input_guess("250")
+input_guess("375")
+
+###################################################
+# Output from test #2
+#New game. Range is [0,100)
+#Number of remaining guesses is 7
+#
+#New game. Range is [0,1000)
+#Number of remaining guesses is 10
+#
+#Guess was 500
+#Number of remaining guesses is 9
+#Lower!
+#
+#Guess was 250
+#Number of remaining guesses is 8
+#Higher!
+#
+#Guess was 375
+#Number of remaining guesses is 7
+#Correct!
+#
+#New game. Range is [0,1000)
+#Number of remaining guesses is 10
+
+
+
+###################################################
+# Start our test #3 - assume global variable secret_number
+# is the the "secret number" - change name if necessary
+
+range100()
+secret_number = 28	
+input_guess("50")
+input_guess("50")
+input_guess("50")
+input_guess("50")
+input_guess("50")
+input_guess("50")
+input_guess("50")
+
+###################################################
+# Output from test #3
+#New game. Range is [0,100)
+#Number of remaining guesses is 7
+#
+#Guess was 50
+#Number of remaining guesses is 6
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 5
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 4
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 3
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 2
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 1
+#Lower!
+#
+#Guess was 50
+#Number of remaining guesses is 0
+#You ran out of guesses.  The number was 28
+#
+#New game. Range is [0,100)
+#Number of remaining guesses is 7
+
+
+    
